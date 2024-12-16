@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+root {
+  --tw-primary: #0062ff;
+  --tw-secondary: red;
+  --tw-destructive: red;
+  --tw-blue: red;
+  --tw-green: red;
+}
+
+/* including dark mode! */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --my-brand-color: blue;
+  }
+}

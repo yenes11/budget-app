@@ -1,12 +1,12 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import AnimatedOpacity from '@/components/ui/AnimatedOpacity';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Ionicons } from '@expo/vector-icons';
+import BudgetSelector from '@/components/BudgetSelector';
+import Icon from '@/components/ui/Icon';
+import { Text } from 'react-native';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -15,29 +15,79 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
+        headerShown: true,
+        headerTitle: 'Home',
+        headerTitleStyle: {
+          // color: 'white',
+        },
+        headerBackgroundContainerStyle: {
+          borderBottomWidth: 0,
+        },
+        // headerShadowVisible: false,
+        headerStyle: {
+          backgroundColor: '#f9fafb',
+        },
+        tabBarButton: AnimatedOpacity,
+        headerRight: () => <BudgetSelector />,
+        // headerLeft(props) {
+        //   return (
+        //     <AnimatedOpacity className="flex-row rounded-full p-2 ml-4 items-center gap-2 ">
+        //       <Icon icon="plus" size={16} />
+        //       <Text>Add</Text>
+        //     </AnimatedOpacity>
+        //   );
+        // },
         tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color, focused, size }) => (
+            <Icon icon="home" size={size} solid={focused} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="budgets"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Budgets',
+          tabBarIcon: ({ color, focused, size }) => (
+            <Icon icon="wallet" size={size} solid={focused} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="categories"
+        options={{
+          title: 'Categories',
+          tabBarIcon: ({ color, focused, size }) => (
+            <Icon icon="tag" size={size} solid={focused} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="reports"
+        options={{
+          title: 'Reports',
+          tabBarIcon: ({ color, focused, size }) => (
+            <Icon icon="chart-bar" size={size} solid={focused} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="options"
+        options={{
+          title: 'Options',
+          tabBarIcon: ({ color, focused, size }) => (
+            <Icon
+              icon="cog-8-tooth"
+              size={size}
+              solid={focused}
+              color={color}
+            />
+          ),
         }}
       />
     </Tabs>

@@ -1,56 +1,103 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  View,
+  Text,
+  ScrollView,
+  Button,
+  Dimensions,
+  SectionList,
+} from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import BudgetSelector from '@/components/BudgetSelector';
+import BudgetCard from '@/components/BudgetCard';
+import TransactionItem from '@/components/TransactionItem';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation, useRouter } from 'expo-router';
+import { FlatList } from 'react-native-gesture-handler';
+import Icon from '@/components/ui/Icon';
+import AnimatedOpacity from '@/components/ui/AnimatedOpacity';
+import AddTransactionSheet from '@/components/AddTransactionSheet';
+
+const DATA = [
+  {
+    title: 'Main dishes',
+    data: ['Pizza', 'Burger', 'Risotto'],
+  },
+  {
+    title: 'Sides',
+    data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
+  },
+  {
+    title: 'Drinks',
+    data: ['Water', 'Coke', 'Beer'],
+  },
+  {
+    title: 'Desserts',
+    data: ['Cheese Cake', 'Ice Cream'],
+  },
+  {
+    title: 'Sides',
+    data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
+  },
+  {
+    title: 'Drinks',
+    data: ['Water', 'Coke', 'Beer'],
+  },
+  {
+    title: 'Desserts',
+    data: ['Cheese Cake', 'Ice Cream'],
+  },
+];
 
 export default function HomeScreen() {
+  const router = useRouter();
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View className="flex-1 bg-gray-50">
+      <AnimatedOpacity
+        onPress={() => router.push('/add-transaction')}
+        className="absolute bottom-4 right-4 bg-blue-600 rounded-full p-4 z-50 flex-row items-center gap-2"
+      >
+        <Icon icon="plus" color="white" size={24} />
+      </AnimatedOpacity>
+
+      {/* <AddTransactionSheet /> */}
+
+      <SectionList
+        contentContainerClassName=""
+        showsVerticalScrollIndicator
+        ListHeaderComponent={() => (
+          <FlatList
+            className="mb-4"
+            data={Array.from({ length: 10 }, (_, index) => index)}
+            contentContainerStyle={{}}
+            renderItem={() => <BudgetCard />}
+            keyExtractor={(item) => item.toString()}
+            horizontal
+            snapToAlignment="center"
+            snapToInterval={Dimensions.get('window').width}
+            decelerationRate={0.5}
+            showsHorizontalScrollIndicator={false}
+          />
+        )}
+        sections={DATA}
+        keyExtractor={(item, index) => item + index}
+        renderItem={(props) => <TransactionItem {...props} />}
+        renderSectionHeader={({ section: { title } }) => (
+          <View className="flex-row items-center justify-between border-y border-gray-200 px-4 py-1 bg-gray-50">
+            <Text className="text-sm text-gray-500 font-medium">
+              12-11-2024
+            </Text>
+            <Text className="text-sm text-green-700 font-medium">+$300</Text>
+          </View>
+        )}
+      />
+    </View>
   );
 }
 
@@ -72,3 +119,29 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
 });
+
+{
+  /* <View className="mb-2 mx-4 mt-4 flex-row items-center gap-1">
+        <Text className="text-2xl font-semibold ">Transactions</Text>
+      </View>
+      <View className="mx-4 my-1 gap-2 flex-row">
+        <Text className="text-sm text-gray-600">Yesterday</Text>
+        <View className="flex-row flex-1 border-gray-300 h-[55%] items-center border-b gap-1"></View>
+        <Text className="text-sm text-gray-600">+3600$</Text>
+      </View>{' '}
+      <View className="bg-white border border-gray-200 rounded-lg mx-4 overflow-hidden">
+        {Array.from({ length: 2 }).map((_, index) => (
+          <TransactionItem key={index} />
+        ))}
+      </View>
+      <View className="mx-4 my-1 gap-2 flex-row">
+        <Text className="text-sm text-gray-600">Yesterday</Text>
+        <View className="flex-row flex-1 border-gray-300 h-[55%] items-center border-b gap-1"></View>
+        <Text className="text-sm text-gray-600">+3600$</Text>
+      </View>
+      <View className="bg-white border border-gray-200 rounded-lg mx-4 overflow-hidden">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <TransactionItem key={index} />
+        ))}
+      </View> */
+}
