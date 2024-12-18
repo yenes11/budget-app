@@ -34,21 +34,22 @@ const TransactionItem = ({ index, section }: TransactionItemProps) => {
 
   return (
     <View
-      className={`px-4 bg-white py-2 flex-row items-center gap-2 ${
-        !isLastItem && 'border-b border-gray-200'
+      className={`px-4 bg-white py-2 mx-4 border-x border-gray-200 flex-row items-center gap-2 ${
+        !isLastItem && 'border-b'
       }`}
     >
       <View
-        className={`${
-          isEven ? 'bg-indigo-100' : 'bg-emerald-100'
-        } self-start rounded-full p-2`}
+        className={`bg-gray-200 rounded-lg p-2`}
+        // className={`${
+        //   isEven ? 'bg-indigo-100' : 'bg-emerald-100'
+        // } rounded-lg p-2`}
       >
         <Icon
-          color={isEven ? 'rgb(55 48 163)' : 'rgb(6 95 70)'}
+          // color={isEven ? 'rgb(55 48 163)' : 'rgb(6 95 70)'}
           icon="shopping-cart"
         />
       </View>
-      <View>
+      <View className="">
         <Text className="text-sm text-gray-600">Shopping</Text>
         <Text
           className={`text-xl font-semibold ${

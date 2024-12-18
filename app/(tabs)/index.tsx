@@ -58,7 +58,7 @@ const DATA = [
 export default function HomeScreen() {
   const router = useRouter();
   return (
-    <View className="flex-1 bg-gray-50">
+    <View className="flex-1">
       <AnimatedOpacity
         onPress={() => router.push('/add-transaction')}
         className="absolute bottom-4 right-4 bg-blue-600 rounded-full p-4 z-50 flex-row items-center gap-2"
@@ -73,9 +73,9 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator
         ListHeaderComponent={() => (
           <FlatList
-            className="mb-4"
+            className="my-4"
             data={Array.from({ length: 10 }, (_, index) => index)}
-            contentContainerStyle={{}}
+            contentContainerStyle={{ gap: 28, paddingHorizontal: 14 }}
             renderItem={() => <BudgetCard />}
             keyExtractor={(item) => item.toString()}
             horizontal
@@ -89,7 +89,7 @@ export default function HomeScreen() {
         keyExtractor={(item, index) => item + index}
         renderItem={(props) => <TransactionItem {...props} />}
         renderSectionHeader={({ section: { title } }) => (
-          <View className="flex-row items-center justify-between border-y border-gray-200 px-4 py-1 bg-gray-50">
+          <View className="flex-row items-center justify-between mx-4 border border-gray-200 px-4 py-1 bg-gray-50">
             <Text className="text-sm text-gray-500 font-medium">
               12-11-2024
             </Text>
